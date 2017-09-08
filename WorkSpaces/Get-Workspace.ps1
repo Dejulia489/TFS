@@ -13,10 +13,10 @@ Function Get-Workspace
         [String]
         [Parameter(Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true)]
-        $ComputerName,
+        $ComputerName = '*',
 
         [String]
-        [Parameter(Mandatory = $true, 
+        [Parameter(Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true)]
         $WorkspaceName,
 
@@ -26,8 +26,10 @@ Function Get-Workspace
         [String]
         [ValidateSet('Detailed', 'Brief')]
         $Format = 'Brief',
-  
+
         [String]
+        [Parameter(Mandatory = $true, 
+            ValueFromPipelineByPropertyName = $true)]
         $Collection
     )
 

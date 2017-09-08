@@ -5,7 +5,7 @@
 Function Remove-Workspace
 {
     [CmdletBinding(SupportsShouldProcess = $true,
-        ConfirmImpact = 'High')]
+        ConfirmImpact = 'Medium')]
     param
     (
         [String]
@@ -18,27 +18,45 @@ Function Remove-Workspace
         [String]
         $Collection,
 
+        [Parameter(Mandatory = $false, 
+            ValueFromPipelineByPropertyName = $true)]
+        [String]
+        [Alias('Name')]
+        $Owner,
+
         [pscredential]
         [Parameter(Mandatory = $false)]
         $Credential
     )
-
-    $Tfexe = 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\TF.exe'
-
-    $arguments = @(
-        'workspace'
-        '/Collection:{0}' -f $Collection
-        '{0}' -f $WorkspaceName 
-    )
-    If ($Credential)
+    Begin
     {
-        $arguments += '/Login:{0},{1}' -f $Credential.UserName, $Credential.GetNetworkCredential().Password
+        $Tfexe = 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\TF.exe'
     }
-    If ($PSCmdlet.ShouldContinue("This will remove the workspace: [$WorkspaceName] from Collection: [$Collection], are you sure?", 'Remove'))
+    Process
     {
-        $arguments += '/delete'
-    }
+        $arguments = @(
+            'workspace'
+            '/Collection:{0}' -f $Collection
+            '{0}' -f $WorkspaceName 
+        )
+        If ($Owner)
+        {
+            $arguments[2] = '{0};{1}' -f $arguments[2], $Owner
+        }
+        If ($Credential)
+        {
+            $arguments += '/Login:{0},{1}' -f $Credential.UserName, $Credential.GetNetworkCredential().Password
+        }
+        If ($PSCmdlet.ShouldContinue("This will remove the workspace: [$WorkspaceName] from Collection: [$Collection], are you sure?", 'Remove'))
+        {
+            $arguments += '/delete'
+        }
         
-    . $Tfexe $arguments
+        . $Tfexe $arguments
+    }
+    End
+    {
+    
+    }
 }
 

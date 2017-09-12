@@ -5,7 +5,7 @@
 Function Remove-Workspace
 {
     [CmdletBinding(SupportsShouldProcess = $true,
-        ConfirmImpact = 'Medium')]
+        ConfirmImpact = 'Low')]
     param
     (
         [String]
@@ -47,11 +47,12 @@ Function Remove-Workspace
         {
             $arguments += '/Login:{0},{1}' -f $Credential.UserName, $Credential.GetNetworkCredential().Password
         }
-        If ($PSCmdlet.ShouldContinue("This will remove the workspace: [$WorkspaceName] from Collection: [$Collection], are you sure?", 'Remove'))
+        If ($PSCmdlet.ShouldProcess("This will remove the workspace: [$WorkspaceName] from Collection: [$Collection], are you sure?", 'Remove'))
         {
             $arguments += '/delete'
         }
         
+        Write-Verbose "Removing Workspace: [$WorkspaceName]" -Verbose
         . $Tfexe $arguments
     }
     End

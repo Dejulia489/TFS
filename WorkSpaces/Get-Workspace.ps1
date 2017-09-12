@@ -61,6 +61,7 @@ Function Get-Workspace
                     WorkSpaceName = ($result.Substring(0, $WorkSpaceLength)).trim()
                     Name = ($result.Substring($WorkSpaceLength + 1, $NameLength)).trim()
                     ComputerName = ($result.Substring(($WorkSpaceLength + 1 + $NameLength + 1), $ComputerNameLength)).trim()
+                    Collection = $Collection
                 }
             }
         }
@@ -75,7 +76,10 @@ Function Get-Workspace
                 If ($result.StartsWith('='))
                 {
                     $Object
-                    [pscustomobject]$Object = @{}
+                    [pscustomobject]$Object = @{
+                        Collection = $Collection
+                    }
+
                     [pscustomobject]$workingFolderObject = @{}
                 }
                 else

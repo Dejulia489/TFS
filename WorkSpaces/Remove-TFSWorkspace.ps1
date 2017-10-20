@@ -1,25 +1,26 @@
 ﻿<#
-    .Synopsis
-    Remove TFS Workspace 
+        .Synopsis
+        Remove TFS Workspace 
 #>
-Function Remove-Workspace
+Function Remove-TFSWorkspace
 {
     [CmdletBinding(SupportsShouldProcess = $true,
-        ConfirmImpact = 'Low')]
+    ConfirmImpact = 'Low')]
     param
     (
         [String]
         [Parameter(Mandatory = $true, 
-            ValueFromPipelineByPropertyName = $true)]
+        ValueFromPipelineByPropertyName = $true)]
         $WorkspaceName,
 
-        [Parameter(Mandatory = $false, 
-            ValueFromPipelineByPropertyName = $true)]
+        # https://tfs/ProjectCollection
         [String]
-        $Collection,
+        [Parameter(Mandatory = $false, 
+        ValueFromPipelineByPropertyName = $true)]
+        $TFSUri,
 
         [Parameter(Mandatory = $false, 
-            ValueFromPipelineByPropertyName = $true)]
+        ValueFromPipelineByPropertyName = $true)]
         [String]
         [Alias('Name')]
         $Owner,
@@ -31,12 +32,20 @@ Function Remove-Workspace
     Begin
     {
         $Tfexe = 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\TF.exe'
+        Try
+        {
+            $null = Resolve-Path -Path $Tfexe -ErrorAction Stop
+        }
+        Catch
+        {
+            Write-Error -Exception $PSitem.Exception.Message
+        }
     }
     Process
     {
         $arguments = @(
             'workspace'
-            '/Collection:{0}' -f $Collection
+            '/Collection:{0}' -f $TFSUri
             '{0}' -f $WorkspaceName 
         )
         If ($Owner)
@@ -47,12 +56,12 @@ Function Remove-Workspace
         {
             $arguments += '/Login:{0},{1}' -f $Credential.UserName, $Credential.GetNetworkCredential().Password
         }
-        If ($PSCmdlet.ShouldProcess("This will remove the workspace: [$WorkspaceName] from Collection: [$Collection], are you sure?", 'Remove'))
+        If ($PSCmdlet.ShouldProcess("This will remove the workspace: [$WorkspaceName] from Collection: [$TFSUri], are you sure?", 'Remove'))
         {
             $arguments += '/delete'
         }
         
-        Write-Verbose "Removing Workspace: [$WorkspaceName]" -Verbose
+        Write-Verbose -Message "Removing Workspace: [$WorkspaceName]" -Verbose
         . $Tfexe $arguments
     }
     End

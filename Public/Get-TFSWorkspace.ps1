@@ -39,15 +39,7 @@ Function Get-TFSWorkspace
     )
     Begin
     {
-        $Tfexe = 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\TF.exe'
-        Try
-        {
-            $null = Resolve-Path -Path $Tfexe -ErrorAction Stop
-        }
-        Catch
-        {
-            Write-Error -Exception $PSitem.Exception.Message
-        }
+        $Tfexe = Get-TFSTfexe
     }
     Process
     {
@@ -77,7 +69,7 @@ Function Get-TFSWorkspace
                         WorkSpaceName = ($result.Substring(0, $WorkSpaceLength)).trim()
                         Name          = ($result.Substring($WorkSpaceLength + 1, $NameLength)).trim()
                         ComputerName  = ($result.Substring(($WorkSpaceLength + 1 + $NameLength + 1), $ComputerNameLength)).trim()
-                        Collection    = $TFSUri
+                        TFSUri    = $TFSUri
                     }
                 }
             }

@@ -44,15 +44,7 @@ Function New-TFSWorkspace
     )
     Begin
     {
-        $Tfexe = 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\TF.exe'
-        Try
-        {
-            $null = Resolve-Path -Path $Tfexe -ErrorAction Stop
-        }
-        Catch
-        {
-            Write-Error -Exception $PSitem.Exception.Message
-        }
+        $Tfexe = Get-TFSTfexe
     }
     Process
     {

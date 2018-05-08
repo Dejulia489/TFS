@@ -41,15 +41,7 @@ Function Add-TFSGroupMember
 
     )
 
-    $TfSecurityexe = "${env:ProgramFiles(x86)}\Microsoft Visual Studio 14.0\Common7\IDE\TFSSecurity.exe"
-    Try
-    {
-        $null = Resolve-Path -Path $TfSecurityexe -ErrorAction Stop
-    }
-    Catch
-    {
-        Write-Error -Exception $PSitem.Exception.Message
-    }
+    $TfSecurityexe = Get-TFSTfSecurityexe
     $arguments = @(
         '/g+'
         '{0}' -f $GroupIdentity

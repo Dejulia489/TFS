@@ -31,7 +31,7 @@ Function Get-TFSPermissionNameSpaces
         $TFSUri
     )
 
-    $TfSecurityexe = 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\TFSSecurity.exe'
+    $TfSecurityexe = Get-TFSTfSecurityexe
     Try
     {
         $null = Resolve-Path -Path $TfSecurityexe -ErrorAction Stop

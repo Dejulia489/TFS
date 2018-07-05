@@ -1,9 +1,10 @@
 [CmdletBinding()]
+
 param()
 $Script:PSModuleRoot = $PSScriptRoot
 Write-Verbose -Message $PSScriptRoot
 
-$folders ='Private', 'Public'
+$folders = 'Private', 'Public'
 foreach ($folder in $folders)
 {
     $root = Join-Path -Path $PSScriptRoot -ChildPath $folder

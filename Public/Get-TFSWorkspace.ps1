@@ -7,7 +7,7 @@
 #>
 Function Get-TFSWorkspace
 {
-    [CmdletBinding(ConfirmImpact = 'High')]
+    [CmdletBinding()]
     param
     (
         [String]
@@ -67,9 +67,10 @@ Function Get-TFSWorkspace
                 {
                     [PSCustomObject]@{
                         WorkSpaceName = ($result.Substring(0, $WorkSpaceLength)).trim()
-                        Name          = ($result.Substring($WorkSpaceLength + 1, $NameLength)).trim()
+                        Owner          = ($result.Substring($WorkSpaceLength + 1, $NameLength)).trim()
                         ComputerName  = ($result.Substring(($WorkSpaceLength + 1 + $NameLength + 1), $ComputerNameLength)).trim()
                         TFSUri    = $TFSUri
+                        ProjectCollectionName = $ProjectCollectionName
                     }
                 }
             }
@@ -85,7 +86,10 @@ Function Get-TFSWorkspace
                     If ($result.StartsWith('='))
                     {
                         #Output Object
-                        $Object
+                        If($Object)
+                        {
+                            $Object
+                        }
                         [pscustomobject]$Object = @{}
 
                         [pscustomobject]$workingFolderObject = @{}

@@ -5,29 +5,30 @@
 Function Remove-TFSWorkspace
 {
     [CmdletBinding(SupportsShouldProcess = $true,
-    ConfirmImpact = 'Low')]
+        ConfirmImpact = 'Low')]
     param
     (
         [String]
         [Parameter(Mandatory = $true, 
-        ValueFromPipelineByPropertyName = $true)]
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true)]
         $WorkspaceName,
 
         [String]
         [Parameter(Mandatory = $true, 
-        ValueFromPipelineByPropertyName = $true)]
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true)]
         $TFSUri,
 
         [String]
         [Parameter(Mandatory = $true, 
+            ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true)]
         $ProjectCollectionName,
 
-        [Parameter(Mandatory = $false, 
-        ValueFromPipelineByPropertyName = $true)]
-        [String]
-        [Alias('Name')]
-        $Owner
+        [Parameter()]
+        [pscredential]
+        $Credential
     )
     Begin
     {
@@ -41,13 +42,13 @@ Function Remove-TFSWorkspace
             '/server:{0}/{1}' -f $TFSUri, $ProjectCollectionName
             '{0}' -f $WorkspaceName 
         )
-        If ($Owner)
+        If ($Credential)
         {
-            $arguments[3] = "{0};ld\{1}" -f $arguments[3], $Owner
+            $arguments += "/login:{0},{1}" -f $Credential.UserName, $Credential.GetNetworkCredential().Password
         }
         If ($PSCmdlet.ShouldProcess("This will remove the workspace: [$WorkspaceName] from Collection: [$TFSUri], are you sure?", 'Remove'))
         {
-            Write-Verbose -Message "Removing Workspace: [$WorkspaceName]" -Verbose
+            Write-Verbose -Message "Removing Workspace: [$WorkspaceName]"
             . $Tfexe $arguments
         }
     }

@@ -10,12 +10,12 @@ Function New-TFSWorkspace
     (
         [String]
         [Parameter(Mandatory = $true, 
-        ValueFromPipelineByPropertyName = $true)]
+            ValueFromPipelineByPropertyName = $true)]
         $WorkspaceName,
 
         [String]
         [Parameter(Mandatory = $false, 
-        ValueFromPipelineByPropertyName = $true)]
+            ValueFromPipelineByPropertyName = $true)]
         $ComputerName,
 
         [String]
@@ -35,7 +35,7 @@ Function New-TFSWorkspace
         # https://tfs/ProjectCollection
         [String]
         [Parameter(Mandatory = $false, 
-        ValueFromPipelineByPropertyName = $true)]
+            ValueFromPipelineByPropertyName = $true)]
         $TFSUri,
 
         [pscredential]

@@ -12,19 +12,19 @@ Function Get-TFSWorkspace
     (
         [String]
         [Parameter(Mandatory = $false, 
-        ValueFromPipelineByPropertyName = $true)]
+            ValueFromPipelineByPropertyName = $true)]
         $ComputerName = '*',
 
         [String]
         [Parameter(Mandatory = $false, 
-        ValueFromPipelineByPropertyName = $true)]
+            ValueFromPipelineByPropertyName = $true)]
         $WorkspaceName,
 
         [String]
         $owner = '*',
 
         [String]
-        [ValidateSet('Detailed','Brief')]
+        [ValidateSet('Detailed', 'Brief')]
         $Format = 'Brief',
         
         [String]
@@ -34,7 +34,7 @@ Function Get-TFSWorkspace
 
         [String]
         [Parameter(Mandatory = $true, 
-        ValueFromPipelineByPropertyName = $true)]
+            ValueFromPipelineByPropertyName = $true)]
         $TFSUri
     )
     Begin
@@ -66,10 +66,10 @@ Function Get-TFSWorkspace
                 Foreach ($result in $filteredResults)
                 {
                     [PSCustomObject]@{
-                        WorkSpaceName = ($result.Substring(0, $WorkSpaceLength)).trim()
-                        Owner          = ($result.Substring($WorkSpaceLength + 1, $NameLength)).trim()
-                        ComputerName  = ($result.Substring(($WorkSpaceLength + 1 + $NameLength + 1), $ComputerNameLength)).trim()
-                        TFSUri    = $TFSUri
+                        WorkSpaceName         = ($result.Substring(0, $WorkSpaceLength)).trim()
+                        Owner                 = ($result.Substring($WorkSpaceLength + 1, $NameLength)).trim()
+                        ComputerName          = ($result.Substring(($WorkSpaceLength + 1 + $NameLength + 1), $ComputerNameLength)).trim()
+                        TFSUri                = $TFSUri
                         ProjectCollectionName = $ProjectCollectionName
                     }
                 }
@@ -86,7 +86,7 @@ Function Get-TFSWorkspace
                     If ($result.StartsWith('='))
                     {
                         #Output Object
-                        If($Object)
+                        If ($Object)
                         {
                             $Object
                         }

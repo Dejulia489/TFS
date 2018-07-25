@@ -7,27 +7,27 @@
 #>
 Function Get-TFSPermissionNameSpaces
 {
-    [CmdletBinding(DefaultParameterSetName='ByProjectCollection')]
+    [CmdletBinding(DefaultParameterSetName = 'ByProjectCollection')]
     param
     (
         [String]
         [Parameter(Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true,
-            ParameterSetName='ByProjectCollection')]
+            ParameterSetName = 'ByProjectCollection')]
         $ProjectCollectionName,
 
         #Application Server, Format: 'http:// ServerName : Port /'
         [String]
         [Parameter(Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true,
-            ParameterSetName='ByApplicationServer')]
+            ParameterSetName = 'ByApplicationServer')]
         $Server,
 
         #TFS URI, Format: https://tfs
         [String]
         [Parameter(Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true,
-            ParameterSetName='ByProjectCollection')]
+            ParameterSetName = 'ByProjectCollection')]
         $TFSUri
     )
 
@@ -43,11 +43,11 @@ Function Get-TFSPermissionNameSpaces
     $arguments = @(
         '/a'
     )    
-    If($server)
+    If ($server)
     {
         $arguments += '/Server:{0}' -f $Server
     }
-    If($TFSUri)
+    If ($TFSUri)
     {
         $arguments += '/collection:{0}/{1}' -f $TFSUri, $ProjectCollectionName
     }
@@ -56,7 +56,7 @@ Function Get-TFSPermissionNameSpaces
     If ($Results.count -gt 1)
     {
         #Extract Length of Columns
-        $ResultsCount = $Results.Count -3
+        $ResultsCount = $Results.Count - 3
         $filteredResults = $Results[6..$ResultsCount] 
         Foreach ($result in $filteredResults)
         {

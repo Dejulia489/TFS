@@ -7,13 +7,13 @@
 #>
 Function Get-TFSPermissionGroups
 {
-    [CmdletBinding(DefaultParameterSetName='ByProjectCollection')]
+    [CmdletBinding(DefaultParameterSetName = 'ByProjectCollection')]
     param
     (
         [String]
         [Parameter(Mandatory = $false, 
             ValueFromPipelineByPropertyName = $true,
-            ParameterSetName='ByProjectCollection')]
+            ParameterSetName = 'ByProjectCollection')]
         $TeamProjectName,
 
         [String]
@@ -25,14 +25,14 @@ Function Get-TFSPermissionGroups
         [String]
         [Parameter(Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true,
-            ParameterSetName='ByApplicationServer')]
+            ParameterSetName = 'ByApplicationServer')]
         $Server,
 
         #TFS URI, Format: https://tfs
         [String]
         [Parameter(Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true,
-            ParameterSetName='ByProjectCollection')]
+            ParameterSetName = 'ByProjectCollection')]
         $TFSUri
 
     )
@@ -49,15 +49,15 @@ Function Get-TFSPermissionGroups
     $arguments = @(
         '/g'
     )
-    If($TeamProjectName)
+    If ($TeamProjectName)
     {
         $arguments += '{0}' -f $TeamProjectName
     }
-    If($server)
+    If ($server)
     {
         $arguments += '/Server:{0}' -f $Server
     }
-    If($TFSUri)
+    If ($TFSUri)
     {        
         $arguments += '/Collection:{0}/{1}' -f $TFsUri, $ProjectCollectionName
     }
@@ -68,32 +68,32 @@ Function Get-TFSPermissionGroups
         $Results += 'SID'
         Foreach ($result in $Results.Trim())
         {
-            If($result.StartsWith('SID'))
+            If ($result.StartsWith('SID'))
             {
-                If($Object)
+                If ($Object)
                 {
                     $Object
                 }
                 $Object = @{}
                 $Object.SID += $result.Split(':')[-1].Trim()
             }
-            If($result.StartsWith('Identity'))
+            If ($result.StartsWith('Identity'))
             {
                 $Object.Identity = $result.Split(':')[-1].Trim()
             }
-            If($result.StartsWith('Group'))
+            If ($result.StartsWith('Group'))
             {
                 $Object.Group = $result.Split(':')[-1].Trim()
             }
-            If($result.StartsWith('Project'))
+            If ($result.StartsWith('Project'))
             {
                 $Object.ProjectScope = $result.Split(':')[-1].Trim()
             }
-            If($result.StartsWith('Display'))
+            If ($result.StartsWith('Display'))
             {
                 $Object.DisplayName = $result.Split(':')[-1].Trim()
             }
-            If($result.StartsWith('Description'))
+            If ($result.StartsWith('Description'))
             {
                 $Object.Description = $result.Split(':')[-1].Trim()
             }

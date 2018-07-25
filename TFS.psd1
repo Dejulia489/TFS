@@ -66,7 +66,7 @@
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Add-TFSGroupMember', 'Get-TFSPermissionGroups', 'Get-TFSPermissionNameSpaces', 'Get-TFSWorkspace', 'New-TFSWorkspace', 'Remove-TFSWorkspace')
+    FunctionsToExport = @('Add-TFSGroupMember', 'Get-TFSPermissionGroups', 'Get-TFSPermissionNameSpaces', 'Get-TFSWorkspace', 'New-TFSWorkspace', 'Remove-TFSWorkspace', 'New-TFSBranch')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.Imo
     CmdletsToExport   = @()

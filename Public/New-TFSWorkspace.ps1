@@ -1,6 +1,6 @@
 ﻿<#
         .Synopsis
-        Remove TFS Workspace 
+        New TFS Workspace 
 #>
 
 Function New-TFSWorkspace
@@ -8,6 +8,11 @@ Function New-TFSWorkspace
     [CmdletBinding()]
     param
     (
+        # Root directory for the workspace you are working in.
+        [String]
+        [Parameter(Mandatory = $true)]
+        $WorkingDirectory,
+
         [String]
         [Parameter(Mandatory = $true, 
             ValueFromPipelineByPropertyName = $true)]
@@ -21,7 +26,7 @@ Function New-TFSWorkspace
         [String]
         [Parameter(Mandatory = $false)]
         $Template,
-        
+
         [String]
         [Parameter(Mandatory = $true)]
         [ValidateSet('Private', 'PublicLimited', 'Public')]
@@ -38,6 +43,11 @@ Function New-TFSWorkspace
             ValueFromPipelineByPropertyName = $true)]
         $TFSUri,
 
+        # Will supress prompts
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $NoPrompt,
+
         [pscredential]
         [Parameter(Mandatory = $false)]
         $Credential
@@ -48,13 +58,14 @@ Function New-TFSWorkspace
     }
     Process
     {
+        Set-Location -Path $WorkingDirectory
         $arguments = @(
             'workspace'
             '/New'
-            '/NoPrompt'
-            '/Collection:{0}' -f $TFSUri
+            '/Collection:{0}/{1}' -f $TFSUri, $ProjectCollectionName
             '/Location:{0}' -f $Location
             '{0}' -f $WorkspaceName 
+            '/Permission:{0}' -f $Permission
         )
         If ($ComputerName)
         {
@@ -64,9 +75,9 @@ Function New-TFSWorkspace
         {
             $arguments += '/Template:{0}' -f $Template
         }
-        If ($Permission)
+        If ($NoPrompt)
         {
-            $arguments += '/Permission:{0}' -f $Permission
+            $arguments += '/NoPrompt'
         }
         If ($Credential)
         {

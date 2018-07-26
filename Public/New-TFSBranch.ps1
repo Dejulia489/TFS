@@ -8,7 +8,7 @@ Function New-TFSBranch
     [CmdletBinding()]
     param
     (
-        # https://tfs/ProjectCollection
+        # Root directory for the workspace you are branching in.
         [String]
         [Parameter(Mandatory = $true)]
         $WorkingDirectory,

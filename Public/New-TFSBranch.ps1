@@ -57,12 +57,14 @@ Function New-TFSBranch
         [Parameter(Mandatory = $false)]
         [switch]
         $Checkin,
-
+        
+        <#
         # For folders branch all files inside, too
         [Parameter(Mandatory = $false)]
         [switch]
         $Recursive,
-
+        #>
+        
         # Provides a value to the /login option. You can specify a username value as either DOMAIN*UserName* or UserName.
         [pscredential]
         [Parameter(Mandatory = $false)]
@@ -112,10 +114,12 @@ Function New-TFSBranch
         {
             $arguments += '/checkin'
         }
+        <#
         If ($Recursive)
         {
             $arguments += '/recursive'
         }
+        #>
         . $Tfexe $arguments
     }
     End
